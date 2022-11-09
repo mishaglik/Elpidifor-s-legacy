@@ -2,21 +2,17 @@
 #define TOOLS_HPP
 /**
  * @file tools.hpp
- * @author First 
- * @brief 
- * @version 0.1
+ * @author First standart commitet.
+ * @brief Basic plugin header.
+ * @version 0.1.0a
  * @date 2022-11-09
  * 
  * @copyright Copyright (c) 2022
  * 
  */
 
-/**
-    Color is 0xRRGGBBAA
-    Module name 
-*/
 #include <cstdint>
-namespace booba {
+namespace booba { // boot of outstanding best api
 
     /**
      * @brief We require you to implement this;
@@ -45,16 +41,35 @@ namespace booba {
         Right
     };
 
-    struct Motion
+    struct MotionEventData
     {
         int32_t x, y;
         int32_t rel_x, rel_y;
     };
 
-    struct ButtonEData
+    struct MouseButtonEventData
     {
         int32_t x, y;
+        MouseButton button; 
         bool shift, alt, ctrl;
+    };
+
+    struct ButtonClickedEventData
+    {
+        uint64_t id; 
+    };
+
+    struct ScrollMovedEventData
+    {
+        uint64_t id; 
+        int32_t value;
+    };
+
+
+    struct CanvasEventData
+    {
+        uint64_t id;
+        int32_t x, y; 
     };
 
     class Event
@@ -63,9 +78,11 @@ namespace booba {
         EventType type;
         union 
         {
-            Motion motion;
-            ButtonEData data;
-            // Button Scroll Canvas
+            MotionEventData motion;
+            MouseButtonEventData mbedata;
+            ButtonClickedEventData bcedata;
+            ScrollMovedEventData smedata;
+            CanvasEventData cedata;
         } Oleg; //Object loading event group.
     };
 
@@ -75,12 +92,17 @@ namespace booba {
     public:
         virtual uint32_t getH()     = 0;
         virtual uint32_t getX()     = 0;
-        virtual uint32_t getPixel() = 0;
+        virtual uint32_t getPixel(int32_t x, int32_t y) = 0;
         virtual void putPixel(uint32_t x, uint32_t y, uint32_t color) = 0;        
         virtual uint32_t& operator()(uint32_t x, uint32_t y);
         virtual const uint32_t& operator()(uint32_t x, uint32_t y) const;
     protected:
         virtual ~Image() = 0;
+    };
+
+    struct ApplicationContext
+    {
+        uint32_t fgColor, bgColor;
     };
 
     class Tool
@@ -89,20 +111,23 @@ namespace booba {
         virtual void apply(Image* image, const Event* event) = 0;
         virtual ~Tool() = 0;
         virtual const char* getTexture() = 0; 
-        void buildSetupWidget();
+        virtual void buildSetupWidget() = 0;
     };
 
-    extern uint64_t createButton   (int32_t x, int32_t y, uint32_t w, uint32_t h, const char*);
-    extern uint64_t createLabel    (int32_t x, int32_t y, uint32_t w, uint32_t h, const char*);
-    extern uint64_t createScrollbar(int32_t x, int32_t y, uint32_t w, uint32_t h);
-    
-    extern uint64_t createCanvas(int32_t x, int32_t y, int32_t w, int32_t h);
-    extern uint64_t putPixel (uint64_t canvas, int32_t x, int32_t y, uint32_t color);
-    extern uint64_t putSprite(uint64_t canvas, int32_t x, int32_t y, uint32_t w, uint32_t h, const char* texture);
-    
+    // This functions will be given to you;
 
-    // This function will be given to you;
-    extern void addTool(Tool* tool);
+    extern "C" uint64_t createButton   (int32_t x, int32_t y, uint32_t w, uint32_t h, const char*);
+    extern "C" uint64_t createLabel    (int32_t x, int32_t y, uint32_t w, uint32_t h, const char*);
+    extern "C" uint64_t createScrollbar(int32_t x, int32_t y, uint32_t w, uint32_t h);
+    
+    extern "C" uint64_t createCanvas(int32_t x, int32_t y, int32_t w, int32_t h);
+    extern "C" uint64_t putPixel (uint64_t canvas, int32_t x, int32_t y, uint32_t color);
+    extern "C" uint64_t putSprite(uint64_t canvas, int32_t x, int32_t y, uint32_t w, uint32_t h, const char* texture);
+    
+    extern "C" void addTool(Tool* tool);
+    extern "C" void addFilter(Tool* tool);
+
+    extern ApplicationContext* APPCONTEXT;
 }
 
 #endif /* TOOLS_HPP */
