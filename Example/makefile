@@ -12,6 +12,9 @@ DEPENDENCES = $(addsuffix .d,$(OBJECTS))
 
 EXECUTABLE = Graph.out
 
+.PHONY: all
+all: bin $(EXECUTABLE)
+
 $(EXECUTABLE): $(OBJECTS) ./Plugins/min.aboba.so
 	@$(CC) $(LDFLAGS) $(OBJECTS) -o $@
 
@@ -23,12 +26,10 @@ $(BINDIR)%.o: $(SRCDIRS)%.cpp
 
 -include $(DEPENDENCES)
 
-.PHONY: all, clean, bin
-
-all: $(EXECUTABLE)
+.PHONY: clean, bin
 
 bin:
-	mkdir $(BINDIR)
+	mkdir -p $(BINDIR)
 
 clean: 
 	rm $(OBJECTS)
