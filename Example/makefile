@@ -22,7 +22,7 @@ $(EXECUTABLE): $(OBJECTS) ./Plugins/min.aboba.so
 	@$(CC) -shared -Wall -Wextra -o $@ -fPIC $<
 
 $(BINDIR)%.o: $(SRCDIRS)%.cpp
-	@$(CC) -MMD -MF $@.d $(CXXFLAGS) $< -o $@
+	@$(CC) -MMD -MF $@.d $(CXXFLAGS) $(LDFLAGS) $< -o $@
 
 -include $(DEPENDENCES)
 
