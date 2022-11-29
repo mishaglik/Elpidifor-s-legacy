@@ -30,6 +30,7 @@ $(BINDIR)%.o: $(SRCDIRS)%.cpp
 
 bin:
 	mkdir -p $(BINDIR)
+	mkdir -p Plugins
 	whereis libsfml-system.so
 
 clean: 
