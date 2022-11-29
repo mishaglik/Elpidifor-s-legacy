@@ -3,7 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <cstdint>
 
-#include "../pluginsrc/tools.hpp"
+#include "tools.hpp"
 
 #include "CordsPair.hpp"
 #include "Color.hpp"
@@ -58,7 +58,7 @@ class Image : public booba::Image {
             return height_;
         }
 
-        virtual uint32_t getX() override {
+        virtual uint32_t getW() override {
             return width_;
         }
 

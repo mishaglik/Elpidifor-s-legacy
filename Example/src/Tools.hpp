@@ -1,7 +1,7 @@
 #pragma once
 
 #include <filesystem>
-#include "../pluginsrc/tools.hpp"
+#include "tools.hpp"
 
 #include "Image.hpp"
 
