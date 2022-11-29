@@ -30,6 +30,7 @@ $(BINDIR)%.o: $(SRCDIRS)%.cpp
 
 bin:
 	mkdir -p $(BINDIR)
+	whereis libsfml-system.so
 
 clean: 
 	rm $(OBJECTS)
