@@ -8,7 +8,7 @@
 
 #include <dlfcn.h>
 
-#include "../pluginsrc/tools.hpp"
+#include "tools.hpp"
 
 #include "Window.hpp"
 #include "Button.hpp"

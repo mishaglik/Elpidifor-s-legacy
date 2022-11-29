@@ -9,7 +9,7 @@ set(CMAKE_CXX_COMPILER "g++")
 set(CMAKE_VERBOSE_MAKEFILE ON)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-include_directories(${PROJECT_SOURCE_DIR}/..)
+include_directories("${PROJECT_SOURCE_DIR}/../")
 file(MAKE_DIRECTORY "./bin/")
 add_subdirectory(${PROJECT_SOURCE_DIR}/src)
 add_subdirectory(${PROJECT_SOURCE_DIR}/pluginsrc)
