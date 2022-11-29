@@ -24,6 +24,7 @@ Tools.hpp
 Utilities.hpp
 )
 
+set(CMAKE_VERBOSE_MAKEFILE ON)
 
 add_executable(Graph ${APP_SOURCES} ${APP_HEADERS})
 
