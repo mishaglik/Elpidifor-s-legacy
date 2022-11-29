@@ -1,7 +1,7 @@
 name: Make
 on:
   push:
-    branches: [ v2.0.0 ]
+    branches: [ v2.0.0, WorkflowTest ]
   pull_request:
     branches: [ v2.0.0 ]
 
