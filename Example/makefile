@@ -15,7 +15,7 @@ EXECUTABLE = Graph.out
 all: bin $(EXECUTABLE) ./Plugins/min.aboba.so
 
 $(EXECUTABLE): $(OBJECTS) 
-	@$(CC)  $(CXXFLAGS) $(OBJECTS) $(LDFLAGS) -o $@ 
+	@$(CC)  $(CXXFLAGS) $(OBJECTS) -o $@ $(LDFLAGS) 
 
 ./Plugins/min.aboba.so: ./pluginsrc/MinTools/MinTools.cpp ./pluginsrc/MinTools/MinTools.hpp ./pluginsrc/tools.hpp
 	@$(CC) -shared -Wall -Wextra -o $@ -fPIC $<
