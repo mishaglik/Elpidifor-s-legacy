@@ -3,7 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <cstdint>
 
-#include "../pluginsrc/tools.hpp"
+#include "tools.hpp"
 
 #include "CordsPair.hpp"
 #include "Color.hpp"
