@@ -1,0 +1,23 @@
+name: Make
+on:
+  push:
+    branches: [ v2.0.0 ]
+  pull_request:
+    branches: [ v2.0.0 ]
+
+env:
+  BUILD_TYPE: Release
+
+jobs:
+  BASIC:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install SFML
+      run: sudo apt-get install libsfml-dev
+
+    - name: Build
+      run: cd Example; make
