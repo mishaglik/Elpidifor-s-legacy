@@ -12,6 +12,11 @@
  */
 
 #include <cstdint>
+
+#ifdef ELPIDIFOR_STANDART_EXTENDED
+#include "optionals.hpp"
+#endif /* ELPIDIFOR_STANDART_EXTENDED */
+
 namespace booba { // boot of outstanding best api
 
     /**
