@@ -281,8 +281,7 @@ namespace booba { // boot of outstanding best api
     extern "C" void putSprite(uint64_t canvas, int32_t x, int32_t y, uint32_t w, uint32_t h, const char* texture);
     
      /**
-     * @brief Creates canvas on some given toolbar.
-     * This function can only be called during buildSetupWidget();
+     * @brief Cleans canvas with given id.
      * @param canvasId - id of canvas
      * @param color to clear.
      */
