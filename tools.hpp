@@ -158,7 +158,7 @@ namespace booba { // boot of outstanding best api
          */
         virtual const uint32_t& operator()(uint32_t x, uint32_t y) const = 0;
     protected:
-        virtual ~Image() = 0;
+        ~Image() {}
     };
 
     /**
@@ -192,7 +192,7 @@ namespace booba { // boot of outstanding best api
          * @brief Destroy the Tool object
          * 
          */
-        virtual ~Tool() = 0;
+        virtual ~Tool() {}
 
         /**
          * @brief Get the texture to draw. 
