@@ -12,13 +12,38 @@
  */
 
 #include <cstdint>
+#ifdef ELPIDIFOR_STANDART_EXTENDED
+#include "optionals.hpp"
+#endif /* ELPIDIFOR_STANDART_EXTENDED */
+#include <cstddef>
+
 namespace booba { // boot of outstanding best api
+
+    /**
+     * @brief GUID - global identifier of your plugin.
+     * 
+     * @attention We use 4 version of GUID specified at @link http://www.rfc-editor.org/rfc/rfc4122 @endlink in it's string represenation.
+     * @warning Null-terminated.
+     * @warning GUID with all zero bytes reffers to core application.
+     */
+    struct GUID
+    {
+        char str[37];
+    };
 
     /**
      * @brief We require you to implement this;
      * Only addTool and addFilter can be called in this function.
      */
     extern "C" void init_module();
+
+
+    /**
+     * @brief Returns GUID of this plugin. 
+     * 
+     * @return GUID of your plugin, which allows other plugins to use your symbols.
+     */
+    extern "C" GUID getGUID();
 
     enum class EventType
     {
@@ -28,11 +53,13 @@ namespace booba { // boot of outstanding best api
         MouseReleased  = 3, // Mouse released on image. Data structure: MouseButtonEventData
 
         ButtonClicked   = 4, // Button on toolbar was clicked. Data structure: ButtonClickedEventData.
-        ScrollbarMoved  = 5, // Scrollbar on toolbar was moved. Data structure: ScrollMovedEventData.
+        SliderMoved  = 5, // Slider on toolbar was moved. Data structure: SliderMovedEventData.
         CanvasMPressed  = 6, // Same as MousePressed, but on canvas. Data structure - CanvasEventData.
         CanvasMReleased = 7, // Same as MouseReleased, but on canvas. Data structure - CanvasEventData.
         CanvasMMoved    = 8, // Same as MouseMoved, but on canvas. Data structure - CanvasEventData.
+        CanvasMLeft     = 9, // Mouse left canvas.
 
+        TimerEvent      = 10, // Timer event. Data structure - TimerEventData.
     };
 
     enum class MouseButton
@@ -43,16 +70,16 @@ namespace booba { // boot of outstanding best api
 
     struct MotionEventData
     {
-        int32_t x, y;
+        size_t x, y;
         /**
          * @brief Relative to previous mouse position.
          */
-        int32_t rel_x, rel_y; 
+        int64_t rel_x, rel_y; 
     };
 
     struct MouseButtonEventData
     {
-        int32_t x, y;
+        size_t x, y;
         MouseButton button; 
         /**
          * @brief If corresponding keys was pressed.
@@ -68,13 +95,13 @@ namespace booba { // boot of outstanding best api
         uint64_t id; 
     };
 
-    struct ScrollMovedEventData
+    struct SliderMovedEventData
     {
         /**
-         * @brief Id of Scrollbar.
+         * @brief Id of slider.
          */
         uint64_t id; 
-        int32_t value;
+        int64_t value;
     };
 
 
@@ -84,7 +111,15 @@ namespace booba { // boot of outstanding best api
          * @brief Id of Canvas.
          */
         uint64_t id;
-        int32_t x, y; 
+        size_t x, y; 
+    };
+
+    struct TimerEventData
+    {
+        /**
+         * @brief time in ms counting from the start of thr program.
+         */
+        uint64_t time;
     };
 
     /**
@@ -99,8 +134,9 @@ namespace booba { // boot of outstanding best api
             MotionEventData motion;
             MouseButtonEventData mbedata;
             ButtonClickedEventData bcedata;
-            ScrollMovedEventData smedata;
+            SliderMovedEventData smedata;
             CanvasEventData cedata;
+            TimerEventData tedata;
         } Oleg; //Object loading event group.
     };
 
@@ -111,16 +147,16 @@ namespace booba { // boot of outstanding best api
         /**
          * @brief Get height of image
          * 
-         * @return uint32_t - height of image.
+         * @return size_t - height of image.
          */
-        virtual uint32_t getH()     = 0;
+        virtual size_t getH()     = 0;
 
         /**
          * @brief Get width of image
          * 
-         * @return uint32_t - width of image
+         * @return size_t - width of image
          */
-        virtual uint32_t getW()     = 0;
+        virtual size_t getW()     = 0;
 
         /**
          * @brief Get the Pixel object
@@ -129,36 +165,19 @@ namespace booba { // boot of outstanding best api
          * @param y - y coord. Must be less than height
          * @return uint32_t - color of pixel
          */
-        virtual uint32_t getPixel(int32_t x, int32_t y) = 0;
+        virtual uint32_t getPixel(size_t x, size_t y) = 0;
 
         /**
-         * @brief Puts pixel on image.
+         * @brief Sets pixel on image.
          * 
          * @param x - x coord. Must be less than width
          * @param y - y coord. Must be less than height
          * @param color - color of new pixel.
          */
-        virtual void putPixel(uint32_t x, uint32_t y, uint32_t color) = 0;     
-
-        /**
-         * @brief Reference access to pixels.
-         * 
-         * @param x - x coord. Must be less than width
-         * @param y - y coord. Must be less than height
-         * @return uint32_t& - reference to color of point.
-         */
-        virtual uint32_t& operator()(uint32_t x, uint32_t y) = 0;
-
-        /**
-         * @brief Const reference access to pixels.
-         * 
-         * @param x - x coord. Must be less than width
-         * @param y - y coord. Must be less than height
-         * @return uint32_t& - reference to color of point.
-         */
-        virtual const uint32_t& operator()(uint32_t x, uint32_t y) const = 0;
+        virtual void setPixel(size_t x, size_t y, uint32_t color) = 0;     
+        
     protected:
-        virtual ~Image() = 0;
+        ~Image() {}
     };
 
     /**
@@ -192,7 +211,7 @@ namespace booba { // boot of outstanding best api
          * @brief Destroy the Tool object
          * 
          */
-        virtual ~Tool() = 0;
+        virtual ~Tool() {}
 
         /**
          * @brief Get the texture to draw. 
@@ -202,13 +221,23 @@ namespace booba { // boot of outstanding best api
         virtual const char* getTexture() = 0; 
 
         /**
-         * @brief Build widget on toolbar by using createButoon/createLabel/createScrollbar/createCanvas
+         * @brief Build widget on toolbar by using createButoon/createLabel/createSlider/createCanvas
          * They will be added to toolbar.
          */
         virtual void buildSetupWidget() = 0;
     };
-
+    
+    /**
+     * @brief Function request toolBar width given size.
+     * This function is called in buildSetupWidget() only before any creation of widgets.
+     * If it is not called size of default toolbar is unspecified.
+     * Call after creation of any widget is UB.
+     * @return if creation was successfull.
+     */
+    extern "C" bool setToolBarSize(size_t w, size_t h);
+    
     // This functions are implemented by GUI lib. 
+    // Core application MUST fit all next widgets is specified rects.
     /**
      * @brief Creates button on some given toolbar.
      * This function can only be called during buildSetupWidget();
@@ -220,7 +249,7 @@ namespace booba { // boot of outstanding best api
      * @param text - text on button.
      * @return unique identifier. 0 if unsuccess.
      */
-    extern "C" uint64_t createButton   (int32_t x, int32_t y, uint32_t w, uint32_t h, const char* text);
+    extern "C" uint64_t createButton   (size_t x, size_t y, size_t w, size_t h, const char* text);
     
     /**
      * @brief Creates label on some given toolbar.
@@ -232,21 +261,21 @@ namespace booba { // boot of outstanding best api
      * @param text - text on label.
      * @return unique identifier. 0 if unsuccess.
      */
-    extern "C" uint64_t createLabel    (int32_t x, int32_t y, uint32_t w, uint32_t h, const char* text);
+    extern "C" uint64_t createLabel    (size_t x, size_t y, size_t w, size_t h, const char* text);
     
     /**
-     * @brief Creates scrollbar on some given toolbar.
+     * @brief Creates slider on some given toolbar.
      * This function can only be called during buildSetupWidget();
      * Emits event with it's id when value changed.
-     * @param x - x coordinate of new scrollbar
-     * @param y - y coordinate of new scrollbar
-     * @param w - width of new scrollbar
-     * @param h - height of new scrollbar
-     * @param maxValue - maximum value of scrollbar.
-     * @param startvalue - start value of scrollbar.
+     * @param x - x coordinate of new slider
+     * @param y - y coordinate of new slider
+     * @param w - width of new slider
+     * @param h - height of new slider
+     * @param maxValue - maximum value of slider.
+     * @param startvalue - start value of slider.
      * @return unique identifier. 0 if unsuccess.
      */
-    extern "C" uint64_t createScrollbar(int32_t x, int32_t y, uint32_t w, uint32_t h, int32_t maxValue, int32_t startValue);
+    extern "C" uint64_t createSlider(size_t x, size_t y, size_t w, size_t h, int64_t minValue, int64_t maxValue, int64_t startValue);
     
     /**
      * @brief Creates canvas on some given toolbar.
@@ -257,7 +286,7 @@ namespace booba { // boot of outstanding best api
      * @param h - height of new canvas
      * @return unique identifier. 0 if unsuccess.
      */
-    extern "C" uint64_t createCanvas(int32_t x, int32_t y, int32_t w, int32_t h);
+    extern "C" uint64_t createCanvas(size_t x, size_t y, size_t w, size_t h);
     
     /**
      * @brief Puts pixel to canvas with given id
@@ -266,7 +295,7 @@ namespace booba { // boot of outstanding best api
      * @param y - y coordinate of pixel.
      * @param color - color of pixel.
      */
-    extern "C" void putPixel (uint64_t canvas, int32_t x, int32_t y, uint32_t color);
+    extern "C" void putPixel (uint64_t canvas, size_t x, size_t y, uint32_t color);
     
     /**
      * @brief Blits image to canvas
@@ -278,7 +307,14 @@ namespace booba { // boot of outstanding best api
      * @param texture - rel path to image.
      * 
      */
-    extern "C" void putSprite(uint64_t canvas, int32_t x, int32_t y, uint32_t w, uint32_t h, const char* texture);
+    extern "C" void putSprite(uint64_t canvas, size_t x, size_t y, size_t w, size_t h, const char* texture);
+    
+     /**
+     * @brief Cleans canvas with given id.
+     * @param canvasId - id of canvas
+     * @param color to clear.
+     */
+    extern "C" void cleanCanvas(uint64_t canvasId, uint32_t color);
     
     /**
      * @brief Adds tool to application.
@@ -292,6 +328,16 @@ namespace booba { // boot of outstanding best api
      * @param tool - tool pointer. App will delete it on exit itself.
      */
     extern "C" void addFilter(Tool* tool);
+
+
+    /**
+     * @brief Attempts to get symbol with name from plugin with given guid. 
+     * @param guid - GUID of plugin to take symbol.
+     * @param name of symbol to perform lookup.
+     * @return The address where that symbol is loaded into
+       memory. nullptr if not found.
+     */
+    extern "C" void* getLibSymbol(GUID guid, const char* name);
 
     /**
      * @brief Pointer to ApplicationCotext.
