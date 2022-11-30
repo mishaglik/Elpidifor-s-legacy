@@ -1,5 +1,9 @@
 #include "MinTools.hpp"
 
+const booba::GUID MyGUID = {"a9c87aad-a26e-4352-99cc-1acd9be1536f"};
+
+extern "C" booba::GUID booba::getGUID() { return MyGUID;}
+
 void DotTool::apply(booba::Image* image, const booba::Event* event) {
     if (!image) {
         return;

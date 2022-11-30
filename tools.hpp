@@ -12,15 +12,38 @@
  */
 
 #include <cstdint>
+#ifdef ELPIDIFOR_STANDART_EXTENDED
+#include "optionals.hpp"
+#endif /* ELPIDIFOR_STANDART_EXTENDED */
 #include <cstddef>
 
 namespace booba { // boot of outstanding best api
+
+    /**
+     * @brief GUID - global identifier of your plugin.
+     * 
+     * @attention We use 4 version of GUID specified at @link http://www.rfc-editor.org/rfc/rfc4122 @endlink in it's string represenation.
+     * @warning Null-terminated.
+     * @warning GUID with all zero bytes reffers to core application.
+     */
+    struct GUID
+    {
+        char str[37];
+    };
 
     /**
      * @brief We require you to implement this;
      * Only addTool and addFilter can be called in this function.
      */
     extern "C" void init_module();
+
+
+    /**
+     * @brief Returns GUID of this plugin. 
+     * 
+     * @return GUID of your plugin, which allows other plugins to use your symbols.
+     */
+    extern "C" GUID getGUID();
 
     enum class EventType
     {
@@ -284,6 +307,16 @@ namespace booba { // boot of outstanding best api
      * @param tool - tool pointer. App will delete it on exit itself.
      */
     extern "C" void addFilter(Tool* tool);
+
+
+    /**
+     * @brief Attempts to get symbol with name from plugin with given guid. 
+     * @param guid - GUID of plugin to take symbol.
+     * @param name of symbol to perform lookup.
+     * @return The address where that symbol is loaded into
+       memory. nullptr if not found.
+     */
+    extern "C" void* getLibSymbol(GUID guid, const char* name);
 
     /**
      * @brief Pointer to ApplicationCotext.
