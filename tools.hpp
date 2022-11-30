@@ -246,7 +246,7 @@ namespace booba { // boot of outstanding best api
      * @param startvalue - start value of slider.
      * @return unique identifier. 0 if unsuccess.
      */
-    extern "C" uint64_t createSlider(int32_t x, int32_t y, uint32_t w, uint32_t h, int32_t maxValue, int32_t startValue);
+    extern "C" uint64_t createSlider(int32_t x, int32_t y, uint32_t w, uint32_t h, int32_t minValue, int32_t maxValue, int32_t startValue);
     
     /**
      * @brief Creates canvas on some given toolbar.
