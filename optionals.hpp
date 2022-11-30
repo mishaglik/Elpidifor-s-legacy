@@ -33,9 +33,9 @@ namespace booba {
 /**
  * @brief the hidden layer will be used to overlay temporary objects on the canvas, by the type of bounding
  * rectangles to highlight the area, the text insertion field, and so on. The hidden layer will be constantly rewritten on the main canvas
- * @return hidden layer id
+ * @return pointer on hidden layer image.
  */
-extern "C" uint64_t getHiddenLayerID(); 
+extern "C" Image* getHiddenLayerID(); 
 #endif /* ELPIDIFOR_HIDDEN_LAYER */
    
 }
