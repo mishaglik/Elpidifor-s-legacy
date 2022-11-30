@@ -91,6 +91,9 @@ namespace booba { // boot of outstanding best api
 
     struct TimerEventData
     {
+        /**
+         * @brief time in ms counting from the start of thr program.
+         */
         uint64_t time;
     };
 
