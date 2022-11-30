@@ -58,6 +58,8 @@ namespace booba { // boot of outstanding best api
         CanvasMReleased = 7, // Same as MouseReleased, but on canvas. Data structure - CanvasEventData.
         CanvasMMoved    = 8, // Same as MouseMoved, but on canvas. Data structure - CanvasEventData.
         CanvasMLeft     = 9, // Mouse left canvas.
+
+        TimerEvent      = 10, // Timer event. Data structure - TimerEventData.
     };
 
     enum class MouseButton
@@ -112,6 +114,14 @@ namespace booba { // boot of outstanding best api
         size_t x, y; 
     };
 
+    struct TimerEventData
+    {
+        /**
+         * @brief time in ms counting from the start of thr program.
+         */
+        uint64_t time;
+    };
+
     /**
      * @brief booba::Event is used to transmit event inside plugin. 
      */
@@ -126,6 +136,7 @@ namespace booba { // boot of outstanding best api
             ButtonClickedEventData bcedata;
             SliderMovedEventData smedata;
             CanvasEventData cedata;
+            TimerEventData tedata;
         } Oleg; //Object loading event group.
     };
 
