@@ -28,7 +28,7 @@ namespace booba { // boot of outstanding best api
         MouseReleased  = 3, // Mouse released on image. Data structure: MouseButtonEventData
 
         ButtonClicked   = 4, // Button on toolbar was clicked. Data structure: ButtonClickedEventData.
-        ScrollbarMoved  = 5, // Scrollbar on toolbar was moved. Data structure: ScrollMovedEventData.
+        SliderMoved  = 5, // Slider on toolbar was moved. Data structure: SliderMovedEventData.
         CanvasMPressed  = 6, // Same as MousePressed, but on canvas. Data structure - CanvasEventData.
         CanvasMReleased = 7, // Same as MouseReleased, but on canvas. Data structure - CanvasEventData.
         CanvasMMoved    = 8, // Same as MouseMoved, but on canvas. Data structure - CanvasEventData.
@@ -68,10 +68,10 @@ namespace booba { // boot of outstanding best api
         uint64_t id; 
     };
 
-    struct ScrollMovedEventData
+    struct SliderMovedEventData
     {
         /**
-         * @brief Id of Scrollbar.
+         * @brief Id of slider.
          */
         uint64_t id; 
         int32_t value;
@@ -99,7 +99,7 @@ namespace booba { // boot of outstanding best api
             MotionEventData motion;
             MouseButtonEventData mbedata;
             ButtonClickedEventData bcedata;
-            ScrollMovedEventData smedata;
+            SliderMovedEventData smedata;
             CanvasEventData cedata;
         } Oleg; //Object loading event group.
     };
@@ -185,7 +185,7 @@ namespace booba { // boot of outstanding best api
         virtual const char* getTexture() = 0; 
 
         /**
-         * @brief Build widget on toolbar by using createButoon/createLabel/createScrollbar/createCanvas
+         * @brief Build widget on toolbar by using createButoon/createLabel/createSlider/createCanvas
          * They will be added to toolbar.
          */
         virtual void buildSetupWidget() = 0;
@@ -218,18 +218,18 @@ namespace booba { // boot of outstanding best api
     extern "C" uint64_t createLabel    (int32_t x, int32_t y, uint32_t w, uint32_t h, const char* text);
     
     /**
-     * @brief Creates scrollbar on some given toolbar.
+     * @brief Creates slider on some given toolbar.
      * This function can only be called during buildSetupWidget();
      * Emits event with it's id when value changed.
-     * @param x - x coordinate of new scrollbar
-     * @param y - y coordinate of new scrollbar
-     * @param w - width of new scrollbar
-     * @param h - height of new scrollbar
-     * @param maxValue - maximum value of scrollbar.
-     * @param startvalue - start value of scrollbar.
+     * @param x - x coordinate of new slider
+     * @param y - y coordinate of new slider
+     * @param w - width of new slider
+     * @param h - height of new slider
+     * @param maxValue - maximum value of slider.
+     * @param startvalue - start value of slider.
      * @return unique identifier. 0 if unsuccess.
      */
-    extern "C" uint64_t createScrollbar(int32_t x, int32_t y, uint32_t w, uint32_t h, int32_t maxValue, int32_t startValue);
+    extern "C" uint64_t createSlider(int32_t x, int32_t y, uint32_t w, uint32_t h, int32_t minValue, int32_t maxValue, int32_t startValue);
     
     /**
      * @brief Creates canvas on some given toolbar.
