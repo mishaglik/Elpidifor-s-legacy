@@ -50,9 +50,10 @@ extern "C" Image* getHiddenLayerID();
  * @param w - width of new checkbox
  * @param h - height of new checkbox
  * @param text - text on checkbox.
+ * @param start - initial state of checkbox
  * @return unique identifier. 0 if unsuccess.
  */
-    extern "C" uint64_t createCheckbox(size_t x, size_t y, size_t w, size_t h, const char* text);
+    extern "C" uint64_t createCheckbox(size_t x, size_t y, size_t w, size_t h, const char* text, bool start);
 
 #endif /* ELPIDIFOR_CHECKBOX */
 
