@@ -226,8 +226,18 @@ namespace booba { // boot of outstanding best api
          */
         virtual void buildSetupWidget() = 0;
     };
-
+    
+    /**
+     * @brief Function request toolBar width given size.
+     * This function is called in buildSetupWidget() only before any creation of widgets.
+     * If it is not called size of default toolbar is unspecified.
+     * Call after creation of any widget is UB.
+     * @return if creation was successfull.
+     */
+    extern "C" bool setToolBarSize(size_t w, size_t h);
+    
     // This functions are implemented by GUI lib. 
+    // Core application MUST fit all next widgets is specified rects.
     /**
      * @brief Creates button on some given toolbar.
      * This function can only be called during buildSetupWidget();
