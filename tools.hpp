@@ -12,6 +12,8 @@
  */
 
 #include <cstdint>
+#include <cstddef>
+
 namespace booba { // boot of outstanding best api
 
     /**
@@ -43,16 +45,16 @@ namespace booba { // boot of outstanding best api
 
     struct MotionEventData
     {
-        int32_t x, y;
+        size_t x, y;
         /**
          * @brief Relative to previous mouse position.
          */
-        int32_t rel_x, rel_y; 
+        int64_t rel_x, rel_y; 
     };
 
     struct MouseButtonEventData
     {
-        int32_t x, y;
+        size_t x, y;
         MouseButton button; 
         /**
          * @brief If corresponding keys was pressed.
@@ -74,7 +76,7 @@ namespace booba { // boot of outstanding best api
          * @brief Id of slider.
          */
         uint64_t id; 
-        int32_t value;
+        int64_t value;
     };
 
 
@@ -84,7 +86,7 @@ namespace booba { // boot of outstanding best api
          * @brief Id of Canvas.
          */
         uint64_t id;
-        int32_t x, y; 
+        size_t x, y; 
     };
 
     /**
@@ -111,16 +113,16 @@ namespace booba { // boot of outstanding best api
         /**
          * @brief Get height of image
          * 
-         * @return uint32_t - height of image.
+         * @return size_t - height of image.
          */
-        virtual uint32_t getH()     = 0;
+        virtual size_t getH()     = 0;
 
         /**
          * @brief Get width of image
          * 
-         * @return uint32_t - width of image
+         * @return size_t - width of image
          */
-        virtual uint32_t getW()     = 0;
+        virtual size_t getW()     = 0;
 
         /**
          * @brief Get the Pixel object
@@ -129,7 +131,7 @@ namespace booba { // boot of outstanding best api
          * @param y - y coord. Must be less than height
          * @return uint32_t - color of pixel
          */
-        virtual uint32_t getPixel(int32_t x, int32_t y) = 0;
+        virtual uint32_t getPixel(size_t x, size_t y) = 0;
 
         /**
          * @brief Sets pixel on image.
@@ -138,7 +140,7 @@ namespace booba { // boot of outstanding best api
          * @param y - y coord. Must be less than height
          * @param color - color of new pixel.
          */
-        virtual void setPixel(uint32_t x, uint32_t y, uint32_t color) = 0;     
+        virtual void setPixel(size_t x, size_t y, uint32_t color) = 0;     
         
     protected:
         ~Image() {}
@@ -203,7 +205,7 @@ namespace booba { // boot of outstanding best api
      * @param text - text on button.
      * @return unique identifier. 0 if unsuccess.
      */
-    extern "C" uint64_t createButton   (int32_t x, int32_t y, uint32_t w, uint32_t h, const char* text);
+    extern "C" uint64_t createButton   (size_t x, size_t y, size_t w, size_t h, const char* text);
     
     /**
      * @brief Creates label on some given toolbar.
@@ -215,7 +217,7 @@ namespace booba { // boot of outstanding best api
      * @param text - text on label.
      * @return unique identifier. 0 if unsuccess.
      */
-    extern "C" uint64_t createLabel    (int32_t x, int32_t y, uint32_t w, uint32_t h, const char* text);
+    extern "C" uint64_t createLabel    (size_t x, size_t y, size_t w, size_t h, const char* text);
     
     /**
      * @brief Creates slider on some given toolbar.
@@ -229,7 +231,7 @@ namespace booba { // boot of outstanding best api
      * @param startvalue - start value of slider.
      * @return unique identifier. 0 if unsuccess.
      */
-    extern "C" uint64_t createSlider(int32_t x, int32_t y, uint32_t w, uint32_t h, int32_t minValue, int32_t maxValue, int32_t startValue);
+    extern "C" uint64_t createSlider(size_t x, size_t y, size_t w, size_t h, int64_t minValue, int64_t maxValue, int64_t startValue);
     
     /**
      * @brief Creates canvas on some given toolbar.
@@ -240,7 +242,7 @@ namespace booba { // boot of outstanding best api
      * @param h - height of new canvas
      * @return unique identifier. 0 if unsuccess.
      */
-    extern "C" uint64_t createCanvas(int32_t x, int32_t y, int32_t w, int32_t h);
+    extern "C" uint64_t createCanvas(size_t x, size_t y, size_t w, size_t h);
     
     /**
      * @brief Puts pixel to canvas with given id
@@ -249,7 +251,7 @@ namespace booba { // boot of outstanding best api
      * @param y - y coordinate of pixel.
      * @param color - color of pixel.
      */
-    extern "C" void putPixel (uint64_t canvas, int32_t x, int32_t y, uint32_t color);
+    extern "C" void putPixel (uint64_t canvas, size_t x, size_t y, uint32_t color);
     
     /**
      * @brief Blits image to canvas
@@ -261,7 +263,7 @@ namespace booba { // boot of outstanding best api
      * @param texture - rel path to image.
      * 
      */
-    extern "C" void putSprite(uint64_t canvas, int32_t x, int32_t y, uint32_t w, uint32_t h, const char* texture);
+    extern "C" void putSprite(uint64_t canvas, size_t x, size_t y, size_t w, size_t h, const char* texture);
     
      /**
      * @brief Cleans canvas with given id.
