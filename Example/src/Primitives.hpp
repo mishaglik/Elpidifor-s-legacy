@@ -66,16 +66,8 @@ class Image : public booba::Image {
             return GetPixel(x, y);
         }
 
-        virtual void putPixel(uint32_t x, uint32_t y, uint32_t color) override {
+        virtual void setPixel(uint32_t x, uint32_t y, uint32_t color) override {
             SetPixel(x, y, color);
-        }
-
-        virtual uint32_t& operator()(uint32_t, uint32_t) override {
-            return width_;
-        }
-
-        virtual const uint32_t& operator()(uint32_t, uint32_t) const override {
-            return height_;
         }
 
         void SetPixel(uint32_t width, uint32_t height, const MyColor& color = 0) {

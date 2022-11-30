@@ -12,7 +12,7 @@ void DotTool::apply(booba::Image* image, const booba::Event* event) {
         
         for (int32_t curX = std::max(0, event->Oleg.mbedata.x - sqSize);     curX < std::min(int32_t(image->getW()), event->Oleg.mbedata.x + sqSize); curX++) {
             for (int32_t curY = std::max(0, event->Oleg.mbedata.y - sqSize); curY < std::min(int32_t(image->getH()), event->Oleg.mbedata.y + sqSize); curY++) {
-                image->putPixel(curX, curY, booba::APPCONTEXT->fgColor);
+                image->setPixel(curX, curY, booba::APPCONTEXT->fgColor);
                 pixelsAmount++;
             }
         }

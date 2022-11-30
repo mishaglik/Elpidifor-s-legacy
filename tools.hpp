@@ -132,31 +132,14 @@ namespace booba { // boot of outstanding best api
         virtual uint32_t getPixel(int32_t x, int32_t y) = 0;
 
         /**
-         * @brief Puts pixel on image.
+         * @brief Sets pixel on image.
          * 
          * @param x - x coord. Must be less than width
          * @param y - y coord. Must be less than height
          * @param color - color of new pixel.
          */
-        virtual void putPixel(uint32_t x, uint32_t y, uint32_t color) = 0;     
-
-        /**
-         * @brief Reference access to pixels.
-         * 
-         * @param x - x coord. Must be less than width
-         * @param y - y coord. Must be less than height
-         * @return uint32_t& - reference to color of point.
-         */
-        virtual uint32_t& operator()(uint32_t x, uint32_t y) = 0;
-
-        /**
-         * @brief Const reference access to pixels.
-         * 
-         * @param x - x coord. Must be less than width
-         * @param y - y coord. Must be less than height
-         * @return uint32_t& - reference to color of point.
-         */
-        virtual const uint32_t& operator()(uint32_t x, uint32_t y) const = 0;
+        virtual void setPixel(uint32_t x, uint32_t y, uint32_t color) = 0;     
+        
     protected:
         ~Image() {}
     };
