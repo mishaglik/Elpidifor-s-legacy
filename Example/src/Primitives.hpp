@@ -47,43 +47,36 @@ class Rectangle {
 class Image : public booba::Image {
     private:
         sf::Image realImage_ = {};
-
     public:
         uint32_t width_  = 0;
         uint32_t height_ = 0;
 
         float rotation_ = 0;
 
-        virtual uint32_t getH() override {
+        virtual ~Image() {}
+
+        virtual size_t getH() override {
             return height_;
         }
 
-        virtual uint32_t getW() override {
+        virtual size_t getW() override {
             return width_;
         }
 
-        virtual uint32_t getPixel(int32_t x, int32_t y) override {
+        virtual uint32_t getPixel(size_t x, size_t y) override {
             return GetPixel(x, y);
         }
 
-        virtual void putPixel(uint32_t x, uint32_t y, uint32_t color) override {
+        virtual void setPixel(size_t x, size_t y, uint32_t color) override {
             SetPixel(x, y, color);
         }
 
-        virtual uint32_t& operator()(uint32_t, uint32_t) override {
-            return width_;
+        void SetPixel(size_t width, size_t height, const MyColor& color = 0) {
+            realImage_.setPixel(uint32_t(width), uint32_t(height), {color.red_, color.green_, color.blue_});
         }
 
-        virtual const uint32_t& operator()(uint32_t, uint32_t) const override {
-            return height_;
-        }
-
-        void SetPixel(uint32_t width, uint32_t height, const MyColor& color = 0) {
-            realImage_.setPixel(width, height, {color.red_, color.green_, color.blue_});
-        }
-
-        uint32_t GetPixel(uint32_t width, uint32_t height) {
-            return (uint32_t(realImage_.getPixel(width, height).r) << 24) + (uint32_t(realImage_.getPixel(width, height).g) << 16) + (uint32_t(realImage_.getPixel(width, height).b) << 8);
+        uint32_t GetPixel(size_t width, size_t height) {
+            return (uint32_t(realImage_.getPixel(uint32_t(width), uint32_t(height)).r) << 24) + (uint32_t(realImage_.getPixel(uint32_t(width), uint32_t(height)).g) << 16) + (uint32_t(realImage_.getPixel(uint32_t(width), uint32_t(height)).b) << 8);
         }
 
         bool LoadFromFile(const sf::String& imageName) {
