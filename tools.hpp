@@ -108,7 +108,7 @@ namespace booba { // boot of outstanding best api
             ButtonClickedEventData bcedata;
             ScrollMovedEventData smedata;
             CanvasEventData cedata;
-            TimerEvent tedata;
+            TimerEventData tedata;
         } Oleg; //Object loading event group.
     };
 
