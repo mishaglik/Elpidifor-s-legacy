@@ -19,7 +19,7 @@
 
 namespace booba {
 
-#if defined(ELPIDIFOR_TEST_EXTENDED) or defined (ELPIFOR_ALL_EXTENIONS)
+#if defined(ELPIDIFOR_TEST_EXTENDED) or defined (ELPIDIFOR_ALL_EXTENIONS)
     /**
      * @brief This is function to test if extension is availiable.
      * Also it can be used to require extensions-supporting core.
