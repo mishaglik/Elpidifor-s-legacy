@@ -57,7 +57,7 @@ namespace booba { // boot of outstanding best api
         CanvasMPressed  = 6, // Same as MousePressed, but on canvas. Data structure - CanvasEventData.
         CanvasMReleased = 7, // Same as MouseReleased, but on canvas. Data structure - CanvasEventData.
         CanvasMMoved    = 8, // Same as MouseMoved, but on canvas. Data structure - CanvasEventData.
-        CanvasMLeft     = 9, // Mouse left canvas.
+        MouseLeft       = 9, // Mouse left image. Data structure - None;
 
         TimerEvent      = 10, // Timer event. Data structure - TimerEventData.
     };
