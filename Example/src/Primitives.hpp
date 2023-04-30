@@ -2,6 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <cstdint>
+#include <cassert>
 
 #include "tools.hpp"
 
@@ -71,6 +72,16 @@ class Image : public booba::Image {
             SetPixel(x, y, color);
         }
 
+        virtual booba::Picture getPicture(size_t x, size_t y, size_t h, size_t w) override
+        {
+            assert(!"Not implemented yet");
+        }
+
+        virtual void setPicture(booba::Picture &&pic) override
+        {
+            assert(!"Not implemented yet");
+        }
+
         void SetPixel(size_t width, size_t height, const MyColor& color = 0) {
             realImage_.setPixel(uint32_t(width), uint32_t(height), {color.red_, color.green_, color.blue_});
         }
@@ -81,7 +92,7 @@ class Image : public booba::Image {
 
         bool LoadFromFile(const sf::String& imageName) {
             return realImage_.loadFromFile(imageName);
-        }   
+        }
 
         Image(uint32_t width, uint32_t height, const MyColor& color = 0) {
             width_  = width;
@@ -89,14 +100,14 @@ class Image : public booba::Image {
 
             realImage_.create(width, height, {color.red_, color.green_, color.blue_});
         }
-        
+
         void Create(uint32_t width, uint32_t height, const uint8_t* pixels) {
             width_  = width;
             height_ = height;
 
             realImage_.create(width, height, pixels);
         }
-        
+
         void Create(uint32_t width, uint32_t height, const MyColor& color = 0) {
             width_  = width;
             height_ = height;
@@ -121,7 +132,7 @@ class Image : public booba::Image {
             sf::Texture curTexture = {};
 
             sf::IntRect area = {sf::Vector2i(xyVirt.x, xyVirt.y), sf::Vector2i(width, height)};
-            
+
             curTexture.loadFromImage(realImage_, area);
 
             rectangle.setTexture(&curTexture);
