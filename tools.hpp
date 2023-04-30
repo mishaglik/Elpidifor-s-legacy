@@ -465,6 +465,11 @@ namespace booba { // boot of outstanding best api
     extern "C" uint64_t createSlider(size_t x, size_t y, size_t w, size_t h, int64_t minValue, int64_t maxValue, int64_t startValue);
 
     /**
+     * @brief Set value to slider by id sliderId.
+     */
+    extern "C" void setValueSlider(uint64_t sliderId, int64_t value);
+
+    /**
      * @brief Creates editor on some given toolbar.
      * This function can only be called during buildSetupWidget();
      * Emits event with it's id when clicked.
