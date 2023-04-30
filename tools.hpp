@@ -62,6 +62,7 @@ namespace booba { // boot of outstanding best api
         MouseLeft       = 9, // Mouse left image. Data structure - None;
 
         TimerEvent      = 10, // Timer event. Data structure - TimerEventData.
+        TextEvent       = 11, // Text changed event. Data structure - TextEventData.
     };
 
     enum class MouseButton
@@ -124,6 +125,16 @@ namespace booba { // boot of outstanding best api
         uint64_t time;
     };
 
+    struct TextEventData
+    {
+        /**
+         * @brief Id of Text.
+         */
+        uint64_t id;
+        const char *text;
+    };
+
+
     /**
      * @brief booba::Event is used to transmit event inside plugin.
      */
@@ -139,6 +150,7 @@ namespace booba { // boot of outstanding best api
             SliderMovedEventData smedata;
             CanvasEventData cedata;
             TimerEventData tedata;
+            TextEventData textdata;
         } Oleg; //Object loading event group.
     };
 
@@ -451,6 +463,33 @@ namespace booba { // boot of outstanding best api
      * @return unique identifier. 0 if unsuccess.
      */
     extern "C" uint64_t createSlider(size_t x, size_t y, size_t w, size_t h, int64_t minValue, int64_t maxValue, int64_t startValue);
+
+    /**
+     * @brief Set value to slider by id sliderId.
+     */
+    extern "C" void setValueSlider(uint64_t sliderId, int64_t value);
+
+    /**
+     * @brief Creates editor on some given toolbar.
+     * This function can only be called during buildSetupWidget();
+     * Emits event with it's id when clicked.
+     * @param x - x coordinate of new editor
+     * @param y - y coordinate of new editor
+     * @param w - width of new editor
+     * @param h - height of new editor
+     * @return unique identifier. 0 if unsuccess.
+     */
+    extern "C" uint64_t createEditor   (size_t x, size_t y, size_t w, size_t h);
+
+    /**
+     * @brief Set text to editor with id editorId.
+     */
+    extern "C" void setTextEditor(uint64_t editorId, const char *text);
+
+    /**
+     * @brief Get text from editor with id editorId.
+     */
+    extern "C" char* getTextEditor(uint64_t editorId);
 
     /**
      * @brief Creates canvas on some given toolbar.
