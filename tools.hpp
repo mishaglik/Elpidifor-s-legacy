@@ -143,17 +143,21 @@ namespace booba { // boot of outstanding best api
 
 
     /**
-     * @brief booba::Event is used to transmit event inside plugin.
+     * @brief booba::Event is used to transmit event inside plugin. 
      */
     class Event
     {
     public:
         EventType type;
-        union
+        union 
         {
             MotionEventData        motion;
             MouseButtonEventData   mbedata;
             ButtonClickedEventData bcedata;
+<<<<<<< HEAD
+=======
+
+>>>>>>> 696f8ceffc34ee610ef4daca4dcb797aeffd4671
             SliderMovedEventData   smedata;
             CanvasEventData        cedata;
             TimerEventData         tedata;
@@ -225,8 +229,35 @@ namespace booba { // boot of outstanding best api
          * @param y - y coord. Must be less than height
          * @param color - color of new pixel.
          */
+<<<<<<< HEAD
         virtual void setPixel(size_t x, size_t y, uint32_t color) = 0;     
         
+=======
+
+        virtual void setPixel(size_t x, size_t y, uint32_t color) = 0;
+
+        /**
+         * @brief Get picture - a rectangular pixel array.
+         *
+         * @note the rectangular must be in the images boundaries.
+         *
+         * @param x - x coord of left down corner
+         * @param y - y coord of left down corner
+         * @param h - height of the rectangular
+         * @param w - width of the rectangular
+         */
+        virtual Picture getPicture(size_t x, size_t y, size_t h, size_t w) = 0;
+
+        /**
+         * @brief Set picture - a rectangular pixel array.
+         *
+         * @note the rectangular must be in the images boundaries.
+         *
+         * @param pic - the picture to set, move-only
+         */
+        virtual void setPicture(Picture &&pic) = 0;
+
+>>>>>>> 696f8ceffc34ee610ef4daca4dcb797aeffd4671
     protected:
         ~Image() {}
     };
@@ -437,8 +468,8 @@ namespace booba { // boot of outstanding best api
      * @return if creation was successfull.
      */
     extern "C" bool setToolBarSize(size_t w, size_t h);
-
-    // This functions are implemented by GUI lib.
+    
+    // This functions are implemented by GUI lib. 
     // Core application MUST fit all next widgets is specified rects.
     /**
      * @brief Creates button on some given toolbar.
@@ -452,7 +483,7 @@ namespace booba { // boot of outstanding best api
      * @return unique identifier. 0 if unsuccess.
      */
     extern "C" uint64_t createButton   (size_t x, size_t y, size_t w, size_t h, const char* text);
-
+    
     /**
      * @brief Creates label on some given toolbar.
      * This function can only be called during buildSetupWidget();
@@ -465,6 +496,18 @@ namespace booba { // boot of outstanding best api
      */
     extern "C" uint64_t createLabel    (size_t x, size_t y, size_t w, size_t h, const char* text);
     
+    /**
+     * @brief Creates editor on some given toolbar.
+     * This function can only be called during buildSetupWidget();
+     * Emits event with it's id when clicked.
+     * @param x - x coordinate of new editor
+     * @param y - y coordinate of new editor
+     * @param w - width of new editor
+     * @param h - height of new editor
+     * @return unique identifier. 0 if unsuccess.
+     */
+    extern "C" uint64_t createEditor   (size_t x, size_t y, size_t w, size_t h);
+
     /**
      * @brief Creates editor on some given toolbar.
      * This function can only be called during buildSetupWidget();
@@ -542,21 +585,25 @@ namespace booba { // boot of outstanding best api
      * @brief Blits image to canvas
      * @param canvas - id of canvas, returned by createCanvas
      * @param x - x coordinate of sprite.
-     * @param y - y coordinate of sprite.
+     * @param y - y coordinate of sprite.  
      * @param w - width of image.
      * @param h - height of image.
      * @param texture - rel path to image.
-     *
+     * 
      */
     extern "C" void putSprite(uint64_t canvas, size_t x, size_t y, size_t w, size_t h, const char* texture);
-
+    
      /**
      * @brief Cleans canvas with given id.
      * @param canvasId - id of canvas
      * @param color to clear.
      */
     extern "C" void cleanCanvas(uint64_t canvasId, Color color);
+<<<<<<< HEAD
     
+=======
+   
+>>>>>>> 696f8ceffc34ee610ef4daca4dcb797aeffd4671
     /**
      * @brief Adds tool to application.
      * @param tool - tool pointer. App will delete it on exit itself.
@@ -571,7 +618,7 @@ namespace booba { // boot of outstanding best api
     extern "C" void addFilter(Tool* tool);
 
     /**
-     * @brief Attempts to get symbol with name from plugin with given guid.
+     * @brief Attempts to get symbol with name from plugin with given guid. 
      * @param guid - GUID of plugin to take symbol.
      * @param name of symbol to perform lookup.
      * @return The address where that symbol is loaded into
