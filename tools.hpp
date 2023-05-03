@@ -1,3 +1,7 @@
+#ifdef ELPIDIFOR_STANDART_EXTENDED
+#include "optionals.hpp"
+#endif /* ELPIDIFOR_STANDART_EXTENDED */
+
 #ifndef TOOLS_HPP
 #define TOOLS_HPP
 /**
@@ -12,9 +16,6 @@
  */
 
 #include <cstdint>
-#ifdef ELPIDIFOR_STANDART_EXTENDED
-#include "optionals.hpp"
-#endif /* ELPIDIFOR_STANDART_EXTENDED */
 #include <cstddef>
 #include <algorithm>
 #include <cassert>
@@ -46,7 +47,7 @@ namespace booba { // boot of outstanding best api
      * @return GUID of your plugin, which allows other plugins to use your symbols.
      */
     extern "C" GUID getGUID();
-
+    
     enum class EventType
     {
         NoEvent        = 0, // Stub. Should be ignored.
@@ -55,14 +56,14 @@ namespace booba { // boot of outstanding best api
         MouseReleased  = 3, // Mouse released on image. Data structure: MouseButtonEventData
 
         ButtonClicked   = 4, // Button on toolbar was clicked. Data structure: ButtonClickedEventData.
-        SliderMoved  = 5, // Slider on toolbar was moved. Data structure: SliderMovedEventData.
+        SliderMoved     = 5, // Slider on toolbar was moved. Data structure: SliderMovedEventData.
         CanvasMPressed  = 6, // Same as MousePressed, but on canvas. Data structure - CanvasEventData.
         CanvasMReleased = 7, // Same as MouseReleased, but on canvas. Data structure - CanvasEventData.
         CanvasMMoved    = 8, // Same as MouseMoved, but on canvas. Data structure - CanvasEventData.
-        MouseLeft       = 9, // Mouse left image. Data structure - None;
+        CanvasMLeft     = 9, // Mouse left canvas.
 
         TimerEvent      = 10, // Timer event. Data structure - TimerEventData.
-        TextEvent       = 11, // Text changed event. Data structure - TextEventData.
+        TextEvent       = 11
     };
 
     enum class MouseButton
@@ -96,6 +97,12 @@ namespace booba { // boot of outstanding best api
          * @brief Id of button.
          */
         uint64_t id;
+    };
+
+    struct TextEventData
+    {
+        uint64_t id;
+        const char *text;
     };
 
     struct SliderMovedEventData
@@ -144,14 +151,43 @@ namespace booba { // boot of outstanding best api
         EventType type;
         union
         {
-            MotionEventData motion;
-            MouseButtonEventData mbedata;
+            MotionEventData        motion;
+            MouseButtonEventData   mbedata;
             ButtonClickedEventData bcedata;
-            SliderMovedEventData smedata;
-            CanvasEventData cedata;
-            TimerEventData tedata;
-            TextEventData textdata;
+            SliderMovedEventData   smedata;
+            CanvasEventData        cedata;
+            TimerEventData         tedata;
+            TextEventData          textdata; 
         } Oleg; //Object loading event group.
+    };
+    
+    /**
+     * @brief 
+     * Color class for default representation color.
+     */
+    class Color
+    {
+    public:
+        uint8_t r;
+        uint8_t g;
+        uint8_t b;
+        uint8_t a;
+
+        Color (uint8_t r, uint8_t g, uint8_t b, uint8_t a):
+            r(r), g(g), b(b), a(a) 
+        {}
+
+        Color(uint32_t integer):
+            r(uint8_t(integer >> 24)),
+            g(uint8_t(integer >> 16)),
+            b(uint8_t(integer >> 8)),
+            a(uint8_t(integer))
+        {}
+        
+        uint32_t toInteger()
+        {
+            return (uint32_t(a) << 24) + (uint32_t(b) << 16) + (uint32_t(g) << 8) + uint32_t(r); 
+        }
     };
 
     class Picture;
@@ -178,9 +214,9 @@ namespace booba { // boot of outstanding best api
          *
          * @param x - x coord. Must be less than width
          * @param y - y coord. Must be less than height
-         * @return uint32_t - color of pixel
+         * @return Color - color of pixel
          */
-        virtual uint32_t getPixel(size_t x, size_t y) = 0;
+        virtual Color getPixel(size_t x, size_t y) = 0;
 
         /**
          * @brief Sets pixel on image.
@@ -189,29 +225,8 @@ namespace booba { // boot of outstanding best api
          * @param y - y coord. Must be less than height
          * @param color - color of new pixel.
          */
-        virtual void setPixel(size_t x, size_t y, uint32_t color) = 0;
-
-        /**
-         * @brief Get picture - a rectangular pixel array.
-         *
-         * @note the rectangular must be in the images boundaries.
-         *
-         * @param x - x coord of left down corner
-         * @param y - y coord of left down corner
-         * @param h - height of the rectangular
-         * @param w - width of the rectangular
-         */
-        virtual Picture getPicture(size_t x, size_t y, size_t h, size_t w) = 0;
-
-        /**
-         * @brief Set picture - a rectangular pixel array.
-         *
-         * @note the rectangular must be in the images boundaries.
-         *
-         * @param pic - the picture to set, move-only
-         */
-        virtual void setPicture(Picture &&pic) = 0;
-
+        virtual void setPixel(size_t x, size_t y, uint32_t color) = 0;     
+        
     protected:
         ~Image() {}
     };
@@ -377,7 +392,7 @@ namespace booba { // boot of outstanding best api
          * @brief fgColor - foreground drawing color.
          * @brief bgColor - background drawing color.
          */
-        uint32_t fgColor, bgColor;
+        Color fgColor, bgColor;
     };
 
     /**
@@ -449,6 +464,18 @@ namespace booba { // boot of outstanding best api
      * @return unique identifier. 0 if unsuccess.
      */
     extern "C" uint64_t createLabel    (size_t x, size_t y, size_t w, size_t h, const char* text);
+    
+    /**
+     * @brief Creates editor on some given toolbar.
+     * This function can only be called during buildSetupWidget();
+     * Emits event with it's id when clicked.
+     * @param x - x coordinate of new editor
+     * @param y - y coordinate of new editor
+     * @param w - width of new editor
+     * @param h - height of new editor
+     * @return unique identifier. 0 if unsuccess.
+     */
+    extern "C" uint64_t createEditor   (size_t x, size_t y, size_t w, size_t h);
 
     /**
      * @brief Creates slider on some given toolbar.
@@ -501,7 +528,7 @@ namespace booba { // boot of outstanding best api
      * @return unique identifier. 0 if unsuccess.
      */
     extern "C" uint64_t createCanvas(size_t x, size_t y, size_t w, size_t h);
-
+    
     /**
      * @brief Puts pixel to canvas with given id
      * @param canvas - id of canvas, returned by createCanvas
@@ -509,8 +536,8 @@ namespace booba { // boot of outstanding best api
      * @param y - y coordinate of pixel.
      * @param color - color of pixel.
      */
-    extern "C" void putPixel (uint64_t canvas, size_t x, size_t y, uint32_t color);
-
+    extern "C" void putPixel (uint64_t canvas, size_t x, size_t y, Color color);
+    
     /**
      * @brief Blits image to canvas
      * @param canvas - id of canvas, returned by createCanvas
@@ -528,8 +555,8 @@ namespace booba { // boot of outstanding best api
      * @param canvasId - id of canvas
      * @param color to clear.
      */
-    extern "C" void cleanCanvas(uint64_t canvasId, uint32_t color);
-
+    extern "C" void cleanCanvas(uint64_t canvasId, Color color);
+    
     /**
      * @brief Adds tool to application.
      * @param tool - tool pointer. App will delete it on exit itself.
@@ -542,7 +569,6 @@ namespace booba { // boot of outstanding best api
      * @param tool - tool pointer. App will delete it on exit itself.
      */
     extern "C" void addFilter(Tool* tool);
-
 
     /**
      * @brief Attempts to get symbol with name from plugin with given guid.
@@ -559,5 +585,9 @@ namespace booba { // boot of outstanding best api
      */
     extern ApplicationContext* APPCONTEXT;
 }
+
+#ifdef ELPIDIFOR_STANDART_EXTENDED
+#include "optionals.hpp"
+#endif /* ELPIDIFOR_STANDART_EXTENDED */
 
 #endif /* TOOLS_HPP */
