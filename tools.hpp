@@ -99,12 +99,6 @@ namespace booba { // boot of outstanding best api
         uint64_t id;
     };
 
-    struct TextEventData
-    {
-        uint64_t id;
-        const char *text;
-    };
-
     struct SliderMovedEventData
     {
         /**
@@ -154,10 +148,6 @@ namespace booba { // boot of outstanding best api
             MotionEventData        motion;
             MouseButtonEventData   mbedata;
             ButtonClickedEventData bcedata;
-<<<<<<< HEAD
-=======
-
->>>>>>> 696f8ceffc34ee610ef4daca4dcb797aeffd4671
             SliderMovedEventData   smedata;
             CanvasEventData        cedata;
             TimerEventData         tedata;
@@ -177,7 +167,7 @@ namespace booba { // boot of outstanding best api
         uint8_t b;
         uint8_t a;
 
-        Color (uint8_t r, uint8_t g, uint8_t b, uint8_t a):
+        Color (uint8_t r = 0, uint8_t g = 0, uint8_t b = 0, uint8_t a = 0):
             r(r), g(g), b(b), a(a) 
         {}
 
@@ -229,12 +219,8 @@ namespace booba { // boot of outstanding best api
          * @param y - y coord. Must be less than height
          * @param color - color of new pixel.
          */
-<<<<<<< HEAD
-        virtual void setPixel(size_t x, size_t y, uint32_t color) = 0;     
-        
-=======
 
-        virtual void setPixel(size_t x, size_t y, uint32_t color) = 0;
+        virtual void setPixel(size_t x, size_t y, Color color) = 0;
 
         /**
          * @brief Get picture - a rectangular pixel array.
@@ -257,7 +243,6 @@ namespace booba { // boot of outstanding best api
          */
         virtual void setPicture(Picture &&pic) = 0;
 
->>>>>>> 696f8ceffc34ee610ef4daca4dcb797aeffd4671
     protected:
         ~Image() {}
     };
@@ -269,13 +254,13 @@ namespace booba { // boot of outstanding best api
      */
     class Picture {
     public:
-        Picture(size_t x, size_t y, size_t w, size_t h, uint32_t *image, size_t image_w, size_t image_h)
+        Picture(size_t x, size_t y, size_t w, size_t h, booba::Color *image, size_t image_w, size_t image_h)
             : x(x), y(y), w(w), h(h)
         {
             assert(x + w <= image_w and y + h <= image_h);
 
             size_t size = w * h;
-            data = new uint32_t[size];
+            data = new booba::Color[size];
             for (size_t i = 0; i < h; ++i)
                 std::copy(image + (i + y) * image_w + x,
                           image + (i + y) * image_w + x + w,
@@ -283,7 +268,7 @@ namespace booba { // boot of outstanding best api
 
         }
 
-        Picture(uint32_t *data, size_t x, size_t y, size_t w, size_t h, bool owning = true)
+        Picture(Color *data, size_t x, size_t y, size_t w, size_t h, bool owning = true)
             : x(x), y(y), w(w), h(h), data(data), owning(owning) {}
 
         Picture(size_t x, size_t y, size_t w, size_t h, Image *image)
@@ -294,7 +279,7 @@ namespace booba { // boot of outstanding best api
             assert(x + w <= image_w and y + h <= image_h);
 
             size_t size = w * h;
-            data = new uint32_t[size];
+            data = new Color[size];
             for (size_t i = 0; i < w; ++i)
                 for (size_t j = 0; j < h; ++j)
                     data[j * w + i] = image->getPixel(i + x, j + y);
@@ -339,13 +324,13 @@ namespace booba { // boot of outstanding best api
             data = nullptr;
         }
 
-        uint32_t& operator()(size_t x, size_t y)
+        booba::Color& operator()(size_t x, size_t y)
         {
             assert(x < w and y < h);
             return data[y * w + x];
         }
 
-        const uint32_t& operator()(size_t x, size_t y) const
+        const booba::Color& operator()(size_t x, size_t y) const
         {
             assert(x < w and y < h);
             return data[y * w + x];
@@ -369,12 +354,12 @@ namespace booba { // boot of outstanding best api
             h = new_h;
         }
 
-        uint32_t* getData() const
+        booba::Color* getData() const
         {
             return data;
         }
 
-        uint32_t* takeData()
+        booba::Color* takeData()
         {
             auto ret = data;
 
@@ -408,7 +393,7 @@ namespace booba { // boot of outstanding best api
     private:
         size_t x, y;
         size_t w, h;
-        uint32_t *data = nullptr;
+        booba::Color *data = nullptr;
         bool owning = true;
     };
 
@@ -599,11 +584,6 @@ namespace booba { // boot of outstanding best api
      * @param color to clear.
      */
     extern "C" void cleanCanvas(uint64_t canvasId, Color color);
-<<<<<<< HEAD
-    
-=======
-   
->>>>>>> 696f8ceffc34ee610ef4daca4dcb797aeffd4671
     /**
      * @brief Adds tool to application.
      * @param tool - tool pointer. App will delete it on exit itself.

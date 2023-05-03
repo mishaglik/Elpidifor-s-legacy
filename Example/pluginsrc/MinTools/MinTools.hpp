@@ -5,7 +5,7 @@
 #include <chrono>
 #include <cstdio>
 
-#include "tools.hpp"
+#include "../../../tools.hpp"
 
 const char DotTexture[]   = "./Icons/min/Dot.png";
 

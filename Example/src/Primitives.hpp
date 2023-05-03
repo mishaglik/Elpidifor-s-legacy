@@ -4,7 +4,7 @@
 #include <cstdint>
 #include <cassert>
 
-#include "tools.hpp"
+#include "../../tools.hpp"
 
 #include "CordsPair.hpp"
 #include "Color.hpp"
@@ -64,11 +64,11 @@ class Image : public booba::Image {
             return width_;
         }
 
-        virtual uint32_t getPixel(size_t x, size_t y) override {
+        virtual booba::Color getPixel(size_t x, size_t y) override {
             return GetPixel(x, y);
         }
 
-        virtual void setPixel(size_t x, size_t y, uint32_t color) override {
+        virtual void setPixel(size_t x, size_t y, booba::Color color) override {
             SetPixel(x, y, color);
         }
 
@@ -82,8 +82,8 @@ class Image : public booba::Image {
             assert(!"Not implemented yet");
         }
 
-        void SetPixel(size_t width, size_t height, const MyColor& color = 0) {
-            realImage_.setPixel(uint32_t(width), uint32_t(height), {color.red_, color.green_, color.blue_});
+        void SetPixel(size_t width, size_t height, const booba::Color& color = 0u) {
+            realImage_.setPixel(uint32_t(width), uint32_t(height), {color.r, color.g, color.b});
         }
 
         uint32_t GetPixel(size_t width, size_t height) {

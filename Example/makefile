@@ -16,10 +16,10 @@ EXECUTABLE = Graph.out
 all: bin $(EXECUTABLE) ./Plugins/min.aboba.so
 
 $(EXECUTABLE): $(OBJECTS) 
-	@$(CC) $(OBJECTS) -o $@ $(LDFLAGS)
+	@$(CC) $(OBJECTS) -ldl -o $@ $(LDFLAGS)
 
 ./Plugins/min.aboba.so: ./pluginsrc/MinTools/MinTools.cpp ./pluginsrc/MinTools/MinTools.hpp ../tools.hpp
-	@$(CC) $(CXXFLAGS) -shared -o $@ -fPIC $<
+	@$(CC) $(CXXFLAGS) -shared -o $@ -fPIC -ldl $<
 
 $(BINDIR)%.o: $(SRCDIRS)%.cpp
 	@$(CC) -MMD -MF $@.d $(CXXFLAGS) -c $< -o $@
