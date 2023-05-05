@@ -3,6 +3,7 @@
 #include <list>
 #include <chrono>
 
+#include "Color.hpp"
 #include "Utilities.hpp"
 
 #include "CordsPair.hpp"
@@ -21,7 +22,7 @@ class Widget {
         Widget* parent_;
         sf::RenderTexture widgetContainer_;
 
-        uint32_t widgetColor_;
+        MyColor widgetColor_;
     private:
         int64_t width_;
         int64_t height_;

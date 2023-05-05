@@ -3,26 +3,13 @@
 #include <iostream>
 #include <cstdint>
 #include <cmath>
+#include "../../tools.hpp"
 
-class MyColor {
+class MyColor : public booba::Color {
     public:
-        uint8_t red_;
-        uint8_t green_;
-        uint8_t blue_;
 
-        MyColor(uint32_t color) : 
-        red_(uint8_t((color & 0xff000000) >> 24)), green_(uint8_t((color & 0x00ff0000) >> 16)), blue_(uint8_t((color & 0x0000ff00) >> 8))
-        {
+        MyColor(uint32_t color) : booba::Color(color)
+        {}
 
-        }
-
-        MyColor(uint8_t red, uint8_t green, uint8_t blue) :
-        red_(red), green_(green), blue_(blue)
-        {
-
-        }
-
-        operator uint32_t() const {
-            return (uint32_t(red_) << 24u) + (uint32_t(green_) << 16u) + (uint32_t(blue_) << 8u);
-        }
+        MyColor(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha = 255): booba::Color(red, green, blue, alpha) {}
 };

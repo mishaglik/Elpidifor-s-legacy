@@ -4,7 +4,7 @@
 #include <cstdint>
 #include <cassert>
 
-#include "tools.hpp"
+#include "../../tools.hpp"
 
 #include "CordsPair.hpp"
 #include "Color.hpp"
@@ -38,7 +38,7 @@ class Rectangle {
             sf::RectangleShape rect(sizesVec);
 
             rect.setPosition({float(x_), float(y_)});
-            rect.setFillColor({color.red_, color.green_, color.blue_});
+            rect.setFillColor({color.r, color.g, color.b, color.a});
 
             widgetContainer.draw(rect);
             widgetContainer.display();
@@ -64,12 +64,12 @@ class Image : public booba::Image {
             return width_;
         }
 
-        virtual uint32_t getPixel(size_t x, size_t y) override {
+        virtual booba::Color getPixel(size_t x, size_t y) override {
             return GetPixel(x, y);
         }
 
-        virtual void setPixel(size_t x, size_t y, uint32_t color) override {
-            SetPixel(x, y, color);
+        virtual void setPixel(size_t x, size_t y, booba::Color color) override {
+            SetPixel(x, y, MyColor(color.r, color.g, color.b, color.a));
         }
 
         virtual booba::Picture getPicture(size_t x, size_t y, size_t h, size_t w) override
@@ -83,11 +83,12 @@ class Image : public booba::Image {
         }
 
         void SetPixel(size_t width, size_t height, const MyColor& color = 0) {
-            realImage_.setPixel(uint32_t(width), uint32_t(height), {color.red_, color.green_, color.blue_});
+            realImage_.setPixel(uint32_t(width), uint32_t(height), {color.r, color.g, color.b});
         }
 
-        uint32_t GetPixel(size_t width, size_t height) {
-            return (uint32_t(realImage_.getPixel(uint32_t(width), uint32_t(height)).r) << 24) + (uint32_t(realImage_.getPixel(uint32_t(width), uint32_t(height)).g) << 16) + (uint32_t(realImage_.getPixel(uint32_t(width), uint32_t(height)).b) << 8);
+        booba::Color GetPixel(size_t width, size_t height) {
+            auto pixel = realImage_.getPixel(uint32_t(width), uint32_t(height));
+            return pixel.toInteger();
         }
 
         bool LoadFromFile(const sf::String& imageName) {
@@ -98,7 +99,7 @@ class Image : public booba::Image {
             width_  = width;
             height_ = height;
 
-            realImage_.create(width, height, {color.red_, color.green_, color.blue_});
+            realImage_.create(width, height, {color.r, color.g, color.b});
         }
 
         void Create(uint32_t width, uint32_t height, const uint8_t* pixels) {
@@ -112,7 +113,7 @@ class Image : public booba::Image {
             width_  = width;
             height_ = height;
 
-            realImage_.create(width, height, {color.red_, color.green_, color.blue_});
+            realImage_.create(width, height, {color.r, color.g, color.b});
         }
 
         void Clear() {
