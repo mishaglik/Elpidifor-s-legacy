@@ -9,7 +9,7 @@ using namespace booba;
 std::mt19937 rnd(time(NULL));
 
 
-inline static void checkPicture(const Picture &pic, uint32_t *image_data, size_t image_w)
+inline static void checkPicture(const Picture &pic, Color *image_data, size_t image_w)
 {
     for (size_t x = 0; x < pic.getW(); ++x)
         for (size_t y = 0; y < pic.getH(); ++y)
@@ -21,8 +21,8 @@ TEST(Basic, ctor)
     size_t image_w = 20;
     size_t image_h = 10;
 
-    uint32_t *image_data = new uint32_t[image_w * image_h];
-    for (size_t i = 0; i < image_w * image_h; ++i)
+    Color *image_data = new Color[image_w * image_h];
+    for (uint32_t i = 0; i < image_w * image_h; ++i)
         image_data[i] = i;
 
     size_t x = 0;
@@ -49,8 +49,8 @@ TEST(Basic, assign)
     size_t image_w = 20;
     size_t image_h = 10;
 
-    uint32_t *image_data = new uint32_t[image_w * image_h];
-    for (size_t i = 0; i < image_w * image_h; ++i)
+    Color *image_data = new Color[image_w * image_h];
+    for (uint32_t i = 0; i < image_w * image_h; ++i)
         image_data[i] = i;
 
     size_t x = 0;
@@ -89,9 +89,9 @@ TEST(Stress, get)
         size_t image_w = rand() % 1000 + 1;
         size_t image_h = rand() % 1000 + 1;
 
-        uint32_t *image_data = new uint32_t[image_w * image_h];
-        for (size_t i = 0; i < image_w * image_h; ++i)
-            image_data[i] = rand();
+        Color *image_data = new Color[image_w * image_h];
+        for (uint32_t i = 0; i < image_w * image_h; ++i)
+            image_data[i] = uint32_t(rand());
 
         for (size_t pic_round = 0; pic_round < 100; ++pic_round) {
             size_t pic_x = rand() % image_w;

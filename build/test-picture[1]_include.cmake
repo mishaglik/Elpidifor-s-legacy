@@ -1,0 +1,5 @@
+if(EXISTS "/home/levce/projectsDED/Elpidifor-s-legacy/build/test-picture[1]_tests.cmake")
+  include("/home/levce/projectsDED/Elpidifor-s-legacy/build/test-picture[1]_tests.cmake")
+else()
+  add_test(test-picture_NOT_BUILT test-picture_NOT_BUILT)
+endif()

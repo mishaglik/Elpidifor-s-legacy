@@ -154,8 +154,38 @@ namespace booba { // boot of outstanding best api
         } Oleg; //Object loading event group.
     };
 
-    class Picture;
+    class Color
+    {
+    public:
+        uint8_t r;
+        uint8_t g;
+        uint8_t b;
+        uint8_t a;
 
+        Color (uint8_t r = 0u, uint8_t g = 0u, uint8_t b = 0u, uint8_t a = 255u):
+            r(r), g(g), b(b), a(a) 
+        {}
+
+        Color(uint32_t integer):
+            r(uint8_t(integer >> 24)),
+            g(uint8_t(integer >> 16)),
+            b(uint8_t(integer >> 8)),
+            a(uint8_t(integer))
+        {}
+        
+        uint32_t toInteger()
+        {
+            return (uint32_t(a) << 24) + (uint32_t(b) << 16) + (uint32_t(g) << 8) + uint32_t(r); 
+        }
+
+        bool operator ==(const Color &that) const
+        {
+            return r == that.r && g == that.g && b == that.b && a == that.a; 
+        }
+    };
+
+    class Picture;
+    
     class Image
     {
     public:
@@ -178,9 +208,9 @@ namespace booba { // boot of outstanding best api
          *
          * @param x - x coord. Must be less than width
          * @param y - y coord. Must be less than height
-         * @return uint32_t - color of pixel
+         * @return Color - color of pixel
          */
-        virtual uint32_t getPixel(size_t x, size_t y) = 0;
+        virtual Color getPixel(size_t x, size_t y) = 0;
 
         /**
          * @brief Sets pixel on image.
@@ -189,7 +219,7 @@ namespace booba { // boot of outstanding best api
          * @param y - y coord. Must be less than height
          * @param color - color of new pixel.
          */
-        virtual void setPixel(size_t x, size_t y, uint32_t color) = 0;
+        virtual void setPixel(size_t x, size_t y, Color color) = 0;
 
         /**
          * @brief Get picture - a rectangular pixel array.
@@ -223,13 +253,13 @@ namespace booba { // boot of outstanding best api
      */
     class Picture {
     public:
-        Picture(size_t x, size_t y, size_t w, size_t h, uint32_t *image, size_t image_w, size_t image_h)
+        Picture(size_t x, size_t y, size_t w, size_t h, Color *image, size_t image_w, size_t image_h)
             : x(x), y(y), w(w), h(h)
         {
             assert(x + w <= image_w and y + h <= image_h);
 
             size_t size = w * h;
-            data = new uint32_t[size];
+            data = new Color[size];
             for (size_t i = 0; i < h; ++i)
                 std::copy(image + (i + y) * image_w + x,
                           image + (i + y) * image_w + x + w,
@@ -237,7 +267,7 @@ namespace booba { // boot of outstanding best api
 
         }
 
-        Picture(uint32_t *data, size_t x, size_t y, size_t w, size_t h, bool owning = true)
+        Picture(Color *data, size_t x, size_t y, size_t w, size_t h, bool owning = true)
             : x(x), y(y), w(w), h(h), data(data), owning(owning) {}
 
         Picture(size_t x, size_t y, size_t w, size_t h, Image *image)
@@ -248,7 +278,7 @@ namespace booba { // boot of outstanding best api
             assert(x + w <= image_w and y + h <= image_h);
 
             size_t size = w * h;
-            data = new uint32_t[size];
+            data = new Color[size];
             for (size_t i = 0; i < w; ++i)
                 for (size_t j = 0; j < h; ++j)
                     data[j * w + i] = image->getPixel(i + x, j + y);
@@ -293,13 +323,13 @@ namespace booba { // boot of outstanding best api
             data = nullptr;
         }
 
-        uint32_t& operator()(size_t x, size_t y)
+        Color& operator()(size_t x, size_t y)
         {
             assert(x < w and y < h);
             return data[y * w + x];
         }
 
-        const uint32_t& operator()(size_t x, size_t y) const
+        const Color& operator()(size_t x, size_t y) const
         {
             assert(x < w and y < h);
             return data[y * w + x];
@@ -323,12 +353,12 @@ namespace booba { // boot of outstanding best api
             h = new_h;
         }
 
-        uint32_t* getData() const
+        Color* getData() const
         {
             return data;
         }
 
-        uint32_t* takeData()
+        Color* takeData()
         {
             auto ret = data;
 
@@ -362,7 +392,7 @@ namespace booba { // boot of outstanding best api
     private:
         size_t x, y;
         size_t w, h;
-        uint32_t *data = nullptr;
+        Color *data = nullptr;
         bool owning = true;
     };
 
@@ -377,7 +407,7 @@ namespace booba { // boot of outstanding best api
          * @brief fgColor - foreground drawing color.
          * @brief bgColor - background drawing color.
          */
-        uint32_t fgColor, bgColor;
+        Color fgColor, bgColor;
     };
 
     /**
@@ -509,7 +539,7 @@ namespace booba { // boot of outstanding best api
      * @param y - y coordinate of pixel.
      * @param color - color of pixel.
      */
-    extern "C" void putPixel (uint64_t canvas, size_t x, size_t y, uint32_t color);
+    extern "C" void putPixel (uint64_t canvas, size_t x, size_t y, Color color);
 
     /**
      * @brief Blits image to canvas
@@ -528,7 +558,7 @@ namespace booba { // boot of outstanding best api
      * @param canvasId - id of canvas
      * @param color to clear.
      */
-    extern "C" void cleanCanvas(uint64_t canvasId, uint32_t color);
+    extern "C" void cleanCanvas(uint64_t canvasId, Color color);
 
     /**
      * @brief Adds tool to application.

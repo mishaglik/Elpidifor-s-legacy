@@ -1,0 +1,7 @@
+add_test([=[Basic.ctor]=]  /home/levce/projectsDED/Elpidifor-s-legacy/build/test-picture [==[--gtest_filter=Basic.ctor]==] --gtest_also_run_disabled_tests)
+set_tests_properties([=[Basic.ctor]=]  PROPERTIES WORKING_DIRECTORY /home/levce/projectsDED/Elpidifor-s-legacy/build SKIP_REGULAR_EXPRESSION [==[\[  SKIPPED \]]==])
+add_test([=[Basic.assign]=]  /home/levce/projectsDED/Elpidifor-s-legacy/build/test-picture [==[--gtest_filter=Basic.assign]==] --gtest_also_run_disabled_tests)
+set_tests_properties([=[Basic.assign]=]  PROPERTIES WORKING_DIRECTORY /home/levce/projectsDED/Elpidifor-s-legacy/build SKIP_REGULAR_EXPRESSION [==[\[  SKIPPED \]]==])
+add_test([=[Stress.get]=]  /home/levce/projectsDED/Elpidifor-s-legacy/build/test-picture [==[--gtest_filter=Stress.get]==] --gtest_also_run_disabled_tests)
+set_tests_properties([=[Stress.get]=]  PROPERTIES WORKING_DIRECTORY /home/levce/projectsDED/Elpidifor-s-legacy/build SKIP_REGULAR_EXPRESSION [==[\[  SKIPPED \]]==])
+set(  test-picture_TESTS Basic.ctor Basic.assign Stress.get)
