@@ -143,4 +143,9 @@ class Image : public booba::Image {
             container.draw(rectangle);
             container.display();
         }
+
+        Image *getHiddenLayer() override
+        {
+            assert(!"Not implemented yet");
+        }
 };

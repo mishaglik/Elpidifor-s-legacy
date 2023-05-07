@@ -29,15 +29,6 @@ namespace booba {
     extern "C" bool testExtension();
 #endif /* ELPIDIFOR_TEST_EXTENDED */
 
-#if defined(ELPIDIFOR_HIDDEN_LAYER) or defined (ELPIDIFOR_ALL_EXTENIONS)
-/**
- * @brief the hidden layer will be used to overlay temporary objects on the canvas, by the type of bounding
- * rectangles to highlight the area, the text insertion field, and so on. The hidden layer will be constantly rewritten on the main canvas
- * @return pointer on hidden layer image.
- */
-extern "C" Image* getHiddenLayerID(); 
-#endif /* ELPIDIFOR_HIDDEN_LAYER */
-
 
 #if defined(ELPIDIFOR_CHECKBOX) or defined (ELPIDIFOR_ALL_EXTENIONS)
 /**
