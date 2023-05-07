@@ -241,7 +241,13 @@ namespace booba { // boot of outstanding best api
          * @param pic - the picture to set, move-only
          */
         virtual void setPicture(Picture &&pic) = 0;
-
+        
+        /**
+         * @brief getHiddenLayer get current hidden layer
+         * 
+         * @return Image* - pointer on hidden layer
+         */
+        virtual Image *getHiddenLayer() = 0;
     protected:
         ~Image() {}
     };
@@ -587,6 +593,7 @@ namespace booba { // boot of outstanding best api
      * @brief Pointer to ApplicationCotext.
      * Pointer itself should be not changed. But fields can be changed.
      */
+    
     extern ApplicationContext* APPCONTEXT;
 }
 
