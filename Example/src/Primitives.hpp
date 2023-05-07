@@ -74,7 +74,7 @@ class Image : public booba::Image {
             SetPixel(x, y, MyColor(color.r, color.g, color.b, color.a));
         }
 
-        virtual booba::Picture getPicture(size_t x, size_t y, size_t h, size_t w) override
+        virtual booba::Picture getPicture(size_t x, size_t y, size_t w, size_t h) override
         {
             assert(!"Not implemented yet");
         }

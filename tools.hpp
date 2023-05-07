@@ -163,7 +163,7 @@ namespace booba { // boot of outstanding best api
         uint8_t a;
 
         Color (uint8_t r = 0u, uint8_t g = 0u, uint8_t b = 0u, uint8_t a = 255u):
-            r(r), g(g), b(b), a(a) 
+            r(r), g(g), b(b), a(a)
         {}
 
         Color(uint32_t integer):
@@ -172,20 +172,20 @@ namespace booba { // boot of outstanding best api
             b(uint8_t(integer >> 8)),
             a(uint8_t(integer))
         {}
-        
+
         uint32_t toInteger()
         {
-            return (uint32_t(a) << 24) + (uint32_t(b) << 16) + (uint32_t(g) << 8) + uint32_t(r); 
+            return (uint32_t(a) << 24) + (uint32_t(b) << 16) + (uint32_t(g) << 8) + uint32_t(r);
         }
 
         bool operator ==(const Color &that) const
         {
-            return r == that.r && g == that.g && b == that.b && a == that.a; 
+            return r == that.r && g == that.g && b == that.b && a == that.a;
         }
     };
 
     class Picture;
-    
+
     class Image
     {
     public:
@@ -228,10 +228,10 @@ namespace booba { // boot of outstanding best api
          *
          * @param x - x coord of left down corner
          * @param y - y coord of left down corner
-         * @param h - height of the rectangular
          * @param w - width of the rectangular
+         * @param h - height of the rectangular
          */
-        virtual Picture getPicture(size_t x, size_t y, size_t h, size_t w) = 0;
+        virtual Picture getPicture(size_t x, size_t y, size_t w, size_t h) = 0;
 
         /**
          * @brief Set picture - a rectangular pixel array.
