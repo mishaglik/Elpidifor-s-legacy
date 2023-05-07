@@ -242,6 +242,13 @@ namespace booba { // boot of outstanding best api
          */
         virtual void setPicture(Picture &&pic) = 0;
 
+        /**
+         * @brief Get the Hidden Layer image, that allows to add some not persistant changes to the picture
+         *
+         * @return Image*, pointer can not be nullptr
+         */
+        virtual Image *getHiddenLayer() = 0;
+
     protected:
         ~Image() {}
     };

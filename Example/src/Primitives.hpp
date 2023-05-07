@@ -54,6 +54,8 @@ class Image : public booba::Image {
 
         float rotation_ = 0;
 
+        Image *hidden_layer_;
+
         virtual ~Image() {}
 
         virtual size_t getH() override {
@@ -142,5 +144,10 @@ class Image : public booba::Image {
 
             container.draw(rectangle);
             container.display();
+        }
+
+        virtual booba::Image *getHiddenLayer() override
+        {
+            return hidden_layer_;
         }
 };
