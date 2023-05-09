@@ -150,4 +150,9 @@ class Image : public booba::Image {
         {
             return hidden_layer_;
         }
+
+        void clean(const booba::Color &color) override
+        {
+
+        }
 };

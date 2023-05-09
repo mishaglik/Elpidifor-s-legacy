@@ -263,6 +263,13 @@ namespace booba { // boot of outstanding best api
          */
         virtual Image *getHiddenLayer() = 0;
 
+        /**
+         * @brief clean image by color
+         *
+         * @param color color for clean
+         */
+        virtual void clean(const Color &color = Color::WHITE) = 0;
+
     protected:
         ~Image() {}
     };
