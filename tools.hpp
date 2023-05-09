@@ -529,6 +529,16 @@ namespace booba { // boot of outstanding best api
     extern "C" char* getTextEditor(uint64_t editorId);
 
     /**
+     * @brief set text to label wtih id labelID
+     */
+    extern "C" void setTextLabel(uint64_t labelId, const char *text);
+    
+    /**
+     * @brief get text from label with id labelId
+     */
+    extern "C" char* getTextLabel(uint64_t labelId);
+
+    /**
      * @brief Creates canvas on some given toolbar.
      * This function can only be called during buildSetupWidget();
      * @param x - x coordinate of new canvas
