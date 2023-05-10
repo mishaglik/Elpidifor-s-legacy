@@ -9,5 +9,4 @@
  extern "C" void init_module() 
 ```
  It will be called as module is loaded. During this function only add_widget add_tool can be called.
-## Possiblilities of module system.
-
+## Currently the reference implementation is [here](https://github.com/levasemin/GraphicEditor).
